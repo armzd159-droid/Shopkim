@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIM Vision & Time | Dark Luxury Eyewear & Timepieces</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              black: '#09090b',
+              dark: '#121215',
+              card: '#18181b',
+              border: 'rgba(255, 255, 255, 0.08)',
+              silver: '#e4e4e7',
+              gold: '#d4af37'
+            }
+          },
+          fontFamily: {
+            brand: ['Cinzel', 'serif'],
+            sans: ['Plus Jakarta Sans', 'Prompt', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chart.js for 7-120 Days Green/Red Profit & Loss Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- SheetJS for Excel (.xlsx) Export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-[#09090b] text-[#fafafa] min-h-screen flex flex-col selection:bg-white selection:text-black">
+
+  <!-- ==================== TOP ANNOUNCEMENT BAR ==================== -->
+  <div class="bg-zinc-950 border-b border-zinc-800/80 py-2 px-4 text-center text-xs tracking-wider text-zinc-400 no-print flex justify-center items-center gap-4">
+    <span class="inline-flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-zinc-300"></i> KIM VISION & TIME — แบรนด์แว่นสายตา แว่นกรองแสงสีฟ้า และนาฬิกาพรีเมียมสีดำ</span>
+    <span class="hidden md:inline text-zinc-600">|</span>
+    <span class="hidden md:inline">จัดส่งฟรีทั่วประเทศ เมื่อสั่งซื้อครบ ฿2,000</span>
+    <span class="hidden md:inline text-zinc-600">|</span>
+    <span class="hidden md:inline text-emerald-400">ระบบใบเสร็จออนไลน์ & ใบกำกับภาษีเต็มรูปแบบ</span>
+  </div>
+
+  <!-- ==================== MAIN HEADER / NAVIGATION ==================== -->
+  <header class="sticky top-0 z-40 glass-header border-b border-zinc-800/80 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Left: Logo & Brand Name -->
+        <div class="flex items-center gap-6">
+          <a href="#" onclick="CustomerApp.switchView('customer'); return false;" class="flex items-center gap-3.5 group">
+            <div class="h-12 w-12 rounded-lg bg-black border border-zinc-800 p-1 flex items-center justify-center shadow-lg group-hover:border-zinc-500 transition">
+              <img src="assets/logo.png" alt="KIM Vision & Time" class="h-full w-full object-contain">
+            </div>
+            <div>
+              <span class="font-serif-brand font-bold text-lg tracking-widest text-white block leading-none">KIM VISION</span>
+              <span class="text-[10px] tracking-[0.25em] text-zinc-400 font-medium block mt-1 uppercase">EST. 2024 · EYEWEAR & WATCHES</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Middle: Main Navigation (แว่นสายตา 10, แว่นกรองแสงสีฟ้า 10, นาฬิกา 10) -->
+        <nav class="hidden lg:flex items-center gap-8 text-sm font-medium text-zinc-300" id="main-nav-links">
+          <button class="cat-tab-btn active hover:text-white transition py-2 border-b-2 border-white text-white" data-category="all">สินค้าทั้งหมด (30)</button>
+          <button class="cat-tab-btn hover:text-white transition py-2 border-b-2 border-transparent text-zinc-400" data-category="prescription_glasses">แว่นสายตา (10)</button>
+          <button class="cat-tab-btn hover:text-white transition py-2 border-b-2 border-transparent text-zinc-400" data-category="bluelight_glasses">แว่นกรองแสงสีฟ้า (10)</button>
+          <button class="cat-tab-btn hover:text-white transition py-2 border-b-2 border-transparent text-zinc-400" data-category="watches">นาฬิกาพรีเมียม (10)</button>
+        </nav>
+
+        <!-- Right: Login/Register & Cart -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <!-- Auth / Profile Button -->
+          <button id="btn-auth-modal" class="px-3.5 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-xs font-semibold text-zinc-200 border border-zinc-800 flex items-center gap-2 transition">
+            <i data-lucide="user" class="w-4 h-4 text-zinc-300"></i>
+            <span class="hidden sm:inline">เข้าสู่ระบบ / สมัครสมาชิก</span>
+          </button>
+
+          <!-- Cart Button -->
+          <button id="btn-open-cart" class="relative p-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-800 transition flex items-center justify-center">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+            <span id="cart-badge-count" class="hidden absolute -top-1.5 -right-1.5 w-5 h-5 bg-white text-black font-bold text-[11px] rounded-full flex items-center justify-center shadow">0</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================================================================= -->
+  <!-- 1. CUSTOMER STOREFRONT VIEW (หน้าร้านลูกค้า) -->
+  <!-- ================================================================= -->
+  <main id="customer-view" class="flex-grow">
+    
+    <!-- Hero Banner (Uniqlo Style Minimalist Showcase) -->
+    <section class="relative bg-gradient-to-b from-zinc-950 to-[#09090b] border-b border-zinc-800/60 overflow-hidden py-12 sm:py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700/80 text-xs text-zinc-300 tracking-wider uppercase">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              VISION & TIME · 2026 BLACK COLLECTION
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-bold tracking-tight text-white font-serif-brand leading-tight">
+              LUXURY EYEWEAR <br><span class="text-zinc-400 italic">& TIMEPIECES</span>
+            </h1>
+            <p class="text-zinc-400 text-base sm:text-lg max-w-xl font-light leading-relaxed">
+              สัมผัสความประณีตเหนือกาลเวลาด้วยแว่นสายตาไทเทเนียมน้ำหนักเบา แว่นกรองแสงสีฟ้าปกป้องสายตา และนาฬิกาข้อมือแซฟไฟร์มินิมอลสีดำ 30 สไตล์
+            </p>
+            <div class="flex flex-wrap gap-4 pt-2">
+              <a href="#product-catalog" class="px-6 py-3.5 bg-white hover:bg-zinc-200 text-black font-semibold text-sm rounded-lg transition shadow-lg flex items-center gap-2">
+                <span>เลือกชมสินค้าทั้งหมด (30 รายการ)</span>
+                <i data-lucide="arrow-down" class="w-4 h-4"></i>
+              </a>
+              <button onclick="CustomerApp.openSizeGuideModal()" class="px-5 py-3.5 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-medium text-sm rounded-lg border border-zinc-700 transition flex items-center gap-2">
+                <i data-lucide="ruler" class="w-4 h-4"></i>
+                <span>คู่มือขนาดแว่น & ข้อมือนาฬิกา</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="relative w-full max-w-sm aspect-[4/5] rounded-2xl bg-gradient-to-br from-zinc-900 to-black p-8 border border-zinc-800 shadow-2xl flex flex-col justify-between overflow-hidden group">
+              <div class="flex justify-between items-start">
+                <span class="text-xs font-mono text-zinc-500 tracking-widest uppercase">ICONIC COLLECTION</span>
+                <span class="px-2.5 py-0.5 rounded bg-white text-black font-bold text-xs">EST. 2024</span>
+              </div>
+              <div class="my-auto text-center py-6">
+                <img src="assets/logo.png" alt="KIM Vision" class="h-32 w-auto mx-auto object-contain drop-shadow-2xl group-hover:scale-105 transition duration-500">
+                <p class="font-serif-brand text-xl font-semibold text-white mt-4">KIM Vision & Time</p>
+                <p class="text-xs text-zinc-400 font-light mt-1">Titanium Eyewear & Sapphire Watches</p>
+              </div>
+              <div class="border-t border-zinc-800 pt-3 flex justify-between items-center text-xs text-zinc-400">
+                <span>Japanese & Swiss Craftsmanship</span>
+                <span class="text-white font-mono font-semibold">฿1,590 - ฿8,990</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Catalog Section -->
+    <section id="product-catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      
+      <!-- Catalog Controls Header (Uniqlo Style Filters & Sorting) -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
+        
+        <!-- Live Search -->
+        <div class="relative flex-grow max-w-md">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+          <input 
+            type="text" 
+            id="store-search-input"
+            placeholder="ค้นหาชื่อแว่นตา, นาฬิกา, หรือรหัส SKU..." 
+            class="w-full pl-10 pr-4 py-2.5 bg-zinc-900 text-white rounded-lg border border-zinc-800 text-sm focus:outline-none focus:border-white transition placeholder-zinc-500"
+          >
+        </div>
+
+        <!-- Sort & Count -->
+        <div class="flex items-center gap-4 justify-between md:justify-end">
+          <span id="product-count-label" class="text-xs text-zinc-400 font-mono">30 รายการ</span>
+          <div class="flex items-center gap-2">
+            <label for="sort-select" class="text-xs text-zinc-400">เรียงตาม:</label>
+            <select id="sort-select" class="bg-zinc-900 text-white text-xs py-2 px-3 rounded-lg border border-zinc-800 focus:outline-none focus:border-white transition">
+              <option value="popular">ยอดนิยม & รีวิวสูงสุด</option>
+              <option value="price-low">ราคา: ต่ำไปสูง</option>
+              <option value="price-high">ราคา: สูงไปต่ำ</option>
+              <option value="newest">สินค้ามาใหม่ล่าสุด</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Category Filter Pills (Mobile Friendly) -->
+      <div class="flex items-center gap-2 overflow-x-auto py-4 scrollbar-none lg:hidden">
+        <button class="cat-tab-btn active px-3.5 py-1.5 rounded-full text-xs bg-zinc-800 text-white border border-zinc-700 whitespace-nowrap" data-category="all">ทั้งหมด (30)</button>
+        <button class="cat-tab-btn px-3.5 py-1.5 rounded-full text-xs bg-zinc-900 text-zinc-400 border border-zinc-800 whitespace-nowrap" data-category="prescription_glasses">แว่นสายตา (10)</button>
+        <button class="cat-tab-btn px-3.5 py-1.5 rounded-full text-xs bg-zinc-900 text-zinc-400 border border-zinc-800 whitespace-nowrap" data-category="bluelight_glasses">แว่นกรองแสงสีฟ้า (10)</button>
+        <button class="cat-tab-btn px-3.5 py-1.5 rounded-full text-xs bg-zinc-900 text-zinc-400 border border-zinc-800 whitespace-nowrap" data-category="watches">นาฬิกา (10)</button>
+      </div>
+
+      <!-- 30 Products Grid -->
+      <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 mt-6">
+        <!-- Dynamically Rendered by app.js -->
+      </div>
+
+    </section>
+
+    <!-- Brand Guarantee Banner -->
+    <section class="border-t border-zinc-800 bg-zinc-950 py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center sm:text-left">
+          
+          <div class="flex items-start gap-4">
+            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 text-white">
+              <i data-lucide="shield" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-white">ไทเทเนียม & กระจกแซฟไฟร์</h4>
+              <p class="text-xs text-zinc-400 mt-1">วัสดุเกรดการบิน ทนทานต่อรอยขีดข่วน 100%</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 text-white">
+              <i data-lucide="truck" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-white">จัดส่งรวดเร็ว ปลอดภัย</h4>
+              <p class="text-xs text-zinc-400 mt-1">แพ็คกล่องแข็งพรีเมียมพร้อมรับประกันสินค้า</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 text-white">
+              <i data-lucide="receipt" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-white">ใบเสร็จออนไลน์ E-Tax</h4>
+              <p class="text-xs text-zinc-400 mt-1">ออกใบเสร็จรับเงิน/ใบกำกับภาษีอิเล็กทรอนิกส์ถูกต้องตามกฎหมาย</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div class="p-3 bg-zinc-900 rounded-xl border border-zinc-800 text-white">
+              <i data-lucide="award" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-white">รับประกันสินค้า 2 ปี</h4>
+              <p class="text-xs text-zinc-400 mt-1">รับประกันตัวเรือน กลไก และกรอบแว่นตานาน 24 เดือน</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- 2. MANAGER DASHBOARD & BACKOFFICE VIEW (ระบบผู้จัดการ) -->
+  <!-- ================================================================= -->
+  <main id="manager-view" class="hidden flex-grow bg-[#09090b]">
+    
+    <!-- Manager Top Header -->
+    <div class="bg-zinc-900 border-b border-zinc-800 py-6 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-3">
+            <span class="px-2.5 py-1 bg-amber-400 text-black font-bold text-xs rounded tracking-wider uppercase">MANAGER CONSOLE</span>
+            <h1 class="text-2xl font-bold text-white font-serif-brand">แดชบอร์ดผู้จัดการ & วิเคราะห์กำไร-ขาดทุน</h1>
+          </div>
+          <p class="text-xs text-zinc-400 mt-1">วิเคราะห์กำไรสุทธิ (เขียว) ต้นทุน (แดง) ยอดขาย 7-120 วัน จัดอันดับ 10 สินค้าขายดี เติมสต็อก และส่งออก Excel</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="CustomerApp.switchView('customer')" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold rounded-lg border border-zinc-700 flex items-center gap-2 transition">
+            <i data-lucide="store" class="w-4 h-4"></i>
+            <span>หน้าร้านลูกค้า</span>
+          </button>
+          <button onclick="ManagerApp.logout()" class="px-4 py-2 bg-red-950/80 hover:bg-red-900 text-red-300 text-xs font-semibold rounded-lg border border-red-800/60 flex items-center gap-2 transition">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span>ออกจากระบบผู้จัดการ</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manager Navigation Tabs -->
+    <div class="border-b border-zinc-800 bg-zinc-950 px-4 sm:px-6 lg:px-8 sticky top-20 z-30">
+      <div class="max-w-7xl mx-auto flex gap-8">
+        <button onclick="switchManagerTab('analytics')" id="tab-btn-analytics" class="tab-btn active py-4 text-sm font-semibold flex items-center gap-2">
+          <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+          <span>วิเคราะห์กำไร-ขาดทุน & 10 อันดับขายดี</span>
+        </button>
+        <button onclick="switchManagerTab('inventory')" id="tab-btn-inventory" class="tab-btn text-zinc-400 hover:text-white py-4 text-sm font-semibold flex items-center gap-2">
+          <i data-lucide="boxes" class="w-4 h-4"></i>
+          <span>จัดการสต็อกแว่นตา & นาฬิกา (30 รายการ)</span>
+        </button>
+        <button onclick="switchManagerTab('orders')" id="tab-btn-orders" class="tab-btn text-zinc-400 hover:text-white py-4 text-sm font-semibold flex items-center gap-2">
+          <i data-lucide="receipt" class="w-4 h-4"></i>
+          <span>ประวัติการขาย & ออกบิล</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1: ANALYTICS & TOP 10 BEST SELLERS -->
+    <section id="manager-tab-analytics" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      
+      <!-- Period Selector & Quick Actions -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-zinc-900/60 p-4 rounded-xl border border-zinc-800">
+        <div>
+          <span class="text-xs text-zinc-400 font-medium">เลือกช่วงเวลาสำหรับวิเคราะห์กราฟ:</span>
+          <div class="flex items-center gap-1.5 mt-2 bg-zinc-950 p-1 rounded-lg border border-zinc-800">
+            <button class="period-btn px-3 py-1.5 rounded text-xs text-zinc-400 hover:text-white transition" data-period="7">7 วัน</button>
+            <button class="period-btn bg-white text-black font-semibold px-3 py-1.5 rounded text-xs transition" data-period="30">30 วัน</button>
+            <button class="period-btn px-3 py-1.5 rounded text-xs text-zinc-400 hover:text-white transition" data-period="60">60 วัน</button>
+            <button class="period-btn px-3 py-1.5 rounded text-xs text-zinc-400 hover:text-white transition" data-period="90">90 วัน</button>
+            <button class="period-btn px-3 py-1.5 rounded text-xs text-zinc-400 hover:text-white transition" data-period="120">120 วัน</button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="ManagerApp.exportSalesExcel()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-lg transition flex items-center gap-2 shadow">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+            <span>ดาวน์โหลดสรุปกำไร-ขาดทุนเป็น Excel (.xlsx)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Cards (Revenue, Profit Green, Cost Red, Orders) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        
+        <div class="p-5 rounded-xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
+          <div class="flex justify-between items-start">
+            <span class="text-xs text-zinc-400">ยอดขายรวม (Revenue)</span>
+            <i data-lucide="dollar-sign" class="w-4 h-4 text-white"></i>
+          </div>
+          <div class="mt-4">
+            <div id="kpi-total-revenue" class="text-2xl font-bold text-white font-mono">฿0</div>
+            <span id="dashboard-period-label" class="text-[11px] text-zinc-500 mt-1 block">ข้อมูลย้อนหลัง 30 วัน</span>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex flex-col justify-between">
+          <div class="flex justify-between items-start">
+            <span class="text-xs text-emerald-400 font-semibold">🟢 กำไรสุทธิ (Net Profit)</span>
+            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <div class="mt-4">
+            <div id="kpi-total-profit" class="text-2xl font-bold text-emerald-400 font-mono">฿0</div>
+            <span class="text-[11px] text-emerald-500/80 mt-1 block">มาร์จิ้นเฉลี่ย: <strong id="kpi-profit-margin">0%</strong></span>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-xl bg-red-950/30 border border-red-500/30 flex flex-col justify-between">
+          <div class="flex justify-between items-start">
+            <span class="text-xs text-red-400 font-semibold">🔴 ต้นทุนสินค้ารวม (Cost)</span>
+            <i data-lucide="trending-down" class="w-4 h-4 text-red-400"></i>
+          </div>
+          <div class="mt-4">
+            <div id="kpi-total-cost" class="text-2xl font-bold text-red-400 font-mono">฿0</div>
+            <span class="text-[11px] text-red-500/80 mt-1 block">ต้นทุนวัสดุและกลไก</span>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
+          <div class="flex justify-between items-start">
+            <span class="text-xs text-zinc-400">จำนวนคำสั่งซื้อ</span>
+            <i data-lucide="shopping-cart" class="w-4 h-4 text-blue-400"></i>
+          </div>
+          <div class="mt-4">
+            <div id="kpi-total-orders" class="text-2xl font-bold text-white font-mono">0 บิล</div>
+            <span class="text-[11px] text-zinc-500 mt-1 block">ยอดเฉลี่ย: <strong id="kpi-avg-order">฿0</strong></span>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-xl bg-zinc-900/80 border border-zinc-800 flex flex-col justify-between">
+          <div class="flex justify-between items-start">
+            <span class="text-xs text-zinc-400">สินค้าสต็อกต่ำ</span>
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i>
+          </div>
+          <div class="mt-4">
+            <div id="kpi-low-stock" class="text-2xl font-bold text-white font-mono">0 รายการ</div>
+            <span class="text-[11px] text-zinc-500 mt-1 block">คงเหลือน้อยกว่า 10 ชิ้น</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sales Profit & Loss Chart (Interactive 7, 30, 60, 90, 120 Days in Green & Red) -->
+      <div class="p-6 rounded-2xl bg-zinc-900/70 border border-zinc-800">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="activity" class="w-5 h-5 text-emerald-400"></i>
+              <span>กราฟวิเคราะห์กำไร-ขาดทุน และยอดขาย (Profit & Loss Analysis)</span>
+            </h3>
+            <p class="text-xs text-zinc-400 mt-0.5">เส้นสีเขียว = กำไรสุทธิ (Profit) | เส้นสีแดง = ต้นทุนสินค้า (Cost) | เส้นสีขาว = ยอดขายรวม (Revenue)</p>
+          </div>
+          <div class="flex items-center gap-3 text-xs">
+            <span class="inline-flex items-center gap-1.5 text-emerald-400"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> กำไรสุทธิ</span>
+            <span class="inline-flex items-center gap-1.5 text-red-400"><span class="w-3 h-3 rounded-full bg-red-500"></span> ต้นทุน</span>
+          </div>
+        </div>
+        <div class="relative h-80 w-full">
+          <canvas id="salesChart"></canvas>
+        </div>
+      </div>
+
+      <!-- TOP 10 BEST SELLERS TABLE -->
+      <div class="rounded-2xl bg-zinc-900/70 border border-zinc-800 overflow-hidden">
+        <div class="p-6 border-b border-zinc-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="award" class="w-5 h-5 text-amber-400"></i>
+              <span>สินค้าขายดี 10 อันดับแรก (Top 10 Best Sellers)</span>
+            </h3>
+            <p class="text-xs text-zinc-400 mt-0.5">จัดอันดับตามจำนวนชิ้นที่ขายได้และกำไรสุทธิ</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-zinc-800 bg-zinc-950/60 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                <th class="py-3 px-4 w-14">อันดับ</th>
+                <th class="py-3 px-4">ชื่อสินค้า & SKU</th>
+                <th class="py-3 px-4 text-right">จำนวนที่ขายได้</th>
+                <th class="py-3 px-4 text-right">ยอดขายรวม</th>
+                <th class="py-3 px-4 text-right text-emerald-400">กำไรสุทธิ</th>
+                <th class="py-3 px-4 text-center">คงเหลือในสต็อก</th>
+                <th class="py-3 px-4 text-right">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="top-10-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 2: INVENTORY & STOCK MANAGEMENT -->
+    <section id="manager-tab-inventory" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      
+      <!-- Inventory Controls -->
+      <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 bg-zinc-900/60 p-4 rounded-xl border border-zinc-800">
+        
+        <div class="flex flex-wrap items-center gap-3">
+          <!-- Search -->
+          <div class="relative w-64">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+            <input type="text" id="inv-search-input" placeholder="ค้นหาชื่อสินค้า, SKU..." class="w-full pl-9 pr-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+
+          <!-- Category Filter -->
+          <select id="inv-category-filter" class="bg-zinc-950 text-white text-xs py-2 px-3 rounded-lg border border-zinc-800 focus:outline-none focus:border-white">
+            <option value="all">ทุกหมวดหมู่สินค้า</option>
+            <option value="prescription_glasses">แว่นสายตา (Prescription)</option>
+            <option value="bluelight_glasses">แว่นกรองแสงสีฟ้า (Blue Light)</option>
+            <option value="watches">นาฬิกาพรีเมียม (Watches)</option>
+          </select>
+
+          <!-- Stock Level Filter -->
+          <select id="inv-stock-filter" class="bg-zinc-950 text-white text-xs py-2 px-3 rounded-lg border border-zinc-800 focus:outline-none focus:border-white">
+            <option value="all">สถานะสต็อกทั้งหมด</option>
+            <option value="in">พร้อมขาย (> 10 ชิ้น)</option>
+            <option value="low">สต็อกเหลือน้อย (1 - 10 ชิ้น)</option>
+            <option value="out">สินค้าหมด (0 ชิ้น)</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="inv-item-count" class="text-xs text-zinc-400 font-mono hidden sm:inline">30 รายการ</span>
+          <button onclick="ManagerApp.openAddProductModal()" class="px-4 py-2 bg-white hover:bg-zinc-200 text-black font-semibold text-xs rounded-lg transition flex items-center gap-1.5 shadow">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>เพิ่มสินค้าใหม่</span>
+          </button>
+          <button onclick="ManagerApp.exportInventoryExcel()" class="px-3.5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium text-xs rounded-lg border border-zinc-700 transition flex items-center gap-1.5">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-400"></i>
+            <span>ส่งออกสต็อก Excel</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Inventory Table -->
+      <div class="rounded-2xl bg-zinc-900/70 border border-zinc-800 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-zinc-800 bg-zinc-950/70 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                <th class="py-3 px-4">SKU</th>
+                <th class="py-3 px-4">ชื่อสินค้า & หมวดหมู่</th>
+                <th class="py-3 px-4 text-right">ราคาขาย</th>
+                <th class="py-3 px-4 text-right text-red-400">ต้นทุน</th>
+                <th class="py-3 px-4 text-center">สถานะสต็อก</th>
+                <th class="py-3 px-4">ขนาด/รุ่น</th>
+                <th class="py-3 px-4 text-right">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- TAB 3: ORDERS & BILLS (INVOICES) -->
+    <section id="manager-tab-orders" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      
+      <!-- Orders Controls -->
+      <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-zinc-900/60 p-4 rounded-xl border border-zinc-800">
+        
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="relative w-64">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+            <input type="text" id="order-search-input" placeholder="ค้นหาเลขออเดอร์, ชื่อลูกค้า, เบอร์โทร..." class="w-full pl-9 pr-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+
+          <select id="order-status-filter" class="bg-zinc-950 text-white text-xs py-2 px-3 rounded-lg border border-zinc-800 focus:outline-none focus:border-white">
+            <option value="all">ทุกสถานะ</option>
+            <option value="Completed">สำเร็จ (Completed)</option>
+            <option value="Shipped">จัดส่งแล้ว (Shipped)</option>
+            <option value="Processing">รอดำเนินการ (Processing)</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="orders-count-label" class="text-xs text-zinc-400 font-mono hidden sm:inline">0 รายการ</span>
+          <button onclick="ManagerApp.exportOrdersExcel()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-lg transition flex items-center gap-2 shadow">
+            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+            <span>ส่งออกประวัติออเดอร์ Excel (.xlsx)</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Orders Table -->
+      <div class="rounded-2xl bg-zinc-900/70 border border-zinc-800 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-zinc-800 bg-zinc-950/70 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                <th class="py-3 px-4">เลขที่ออเดอร์ / บิล</th>
+                <th class="py-3 px-4">วันที่-เวลา</th>
+                <th class="py-3 px-4">ชื่อลูกค้า & เบอร์โทร</th>
+                <th class="py-3 px-4">รายการสินค้า</th>
+                <th class="py-3 px-4 text-right">ยอดสุทธิ</th>
+                <th class="py-3 px-4 text-center">สถานะ</th>
+                <th class="py-3 px-4 text-right">การจัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-black border-t border-zinc-800/80 py-12 px-4 sm:px-6 lg:px-8 text-zinc-400 text-xs no-print mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="flex items-center gap-3">
+        <img src="assets/logo.png" alt="KIM Vision" class="h-8 w-auto">
+        <div>
+          <span class="font-serif-brand font-bold text-white text-sm">KIM VISION & TIME</span>
+          <p class="text-[11px] text-zinc-500">© 2024 - 2026 KIM Vision & Time Co., Ltd. สงวนลิขสิทธิ์ทุกประการ</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-6 text-zinc-400">
+        <a href="#" onclick="CustomerApp.openSizeGuideModal(); return false;" class="hover:text-white transition">คู่มือขนาดแว่นตา & นาฬิกา</a>
+        <a href="#" onclick="CustomerApp.openAuthModal('login'); return false;" class="hover:text-white transition">เข้าสู่ระบบ (รหัสแอดมิน: 1234)</a>
+        <a href="#" onclick="alert('ศูนย์บริการลูกค้า KIM Vision โทร: 02-998-8888 ให้บริการ จ.-ศ. 09:00 - 18:00'); return false;" class="hover:text-white transition">ติดต่อเรา</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================================================================= -->
+  <!-- MODALS & DRAWERS -->
+  <!-- ================================================================= -->
+
+  <!-- UNIFIED AUTH MODAL (เข้าสู่ระบบ & สมัครสมาชิกใหม่) -->
+  <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
+      <button onclick="CustomerApp.closeAuthModal()" class="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white rounded-lg transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Clean 2-Tab Selector -->
+      <div class="flex border-b border-zinc-800 mb-6 bg-zinc-950 p-1 rounded-xl">
+        <button id="auth-tab-login" onclick="CustomerApp.switchAuthTab('login')" class="flex-1 py-2 text-xs rounded-lg transition text-white bg-zinc-800 font-semibold">
+          เข้าสู่ระบบ (Login)
+        </button>
+        <button id="auth-tab-register" onclick="CustomerApp.switchAuthTab('register')" class="flex-1 py-2 text-xs rounded-lg transition text-zinc-400">
+          สมัครสมาชิกใหม่ (Register)
+        </button>
+      </div>
+
+      <!-- TAB 1: UNIFIED LOGIN (ลูกค้า หรือ ใส่รหัสแอดมิน 1234) -->
+      <form id="auth-form-login" onsubmit="event.preventDefault(); CustomerApp.submitUnifiedLogin();" class="space-y-4">
+        <div>
+          <label class="text-xs text-zinc-400 block mb-1">เบอร์โทรศัพท์ / อีเมล หรือ รหัสแอดมิน</label>
+          <input type="text" id="login-identifier" placeholder="เช่น 081-452-9871 หรือ admin" class="w-full px-3.5 py-2.5 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+        </div>
+        <div>
+          <label class="text-xs text-zinc-400 block mb-1">รหัสผ่าน / PIN แอดมิน</label>
+          <input type="password" id="login-password" placeholder="ใส่รหัสผ่าน หรือ รหัสแอดมิน: 1234" class="w-full px-3.5 py-2.5 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+        </div>
+
+        <div class="p-3 bg-zinc-950/80 border border-zinc-800 rounded-lg text-[11px] text-zinc-400 flex items-center gap-2">
+          <i data-lucide="key" class="w-4 h-4 text-amber-400 flex-shrink-0"></i>
+          <span>💡 <strong>สำหรับแอดมิน:</strong> ใส่รหัสผ่าน <strong>1234</strong> เพื่อเข้าแดชบอร์ดจัดการร้าน</span>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-white hover:bg-zinc-200 text-black font-bold text-xs rounded-xl transition shadow-lg mt-2">
+          เข้าสู่ระบบ
+        </button>
+        <div class="text-center pt-2">
+          <button type="button" onclick="CustomerApp.switchAuthTab('register')" class="text-xs text-zinc-400 hover:text-white underline">ยังไม่มีบัญชีลูกค้า? คลิกสมัครสมาชิกใหม่</button>
+        </div>
+      </form>
+
+      <!-- TAB 2: CUSTOMER REGISTER FORM -->
+      <form id="auth-form-register" onsubmit="event.preventDefault(); CustomerApp.submitCustomerRegister();" class="hidden space-y-3">
+        <div>
+          <label class="text-xs text-zinc-400 block mb-1">ชื่อ - นามสกุล <span class="text-red-400">*</span></label>
+          <input type="text" id="reg-name" required placeholder="เช่น คุณธนกร วัฒนศิริ" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-zinc-400 block mb-1">เบอร์โทรศัพท์ <span class="text-red-400">*</span></label>
+            <input type="tel" id="reg-phone" required placeholder="08x-xxx-xxxx" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+          <div>
+            <label class="text-xs text-zinc-400 block mb-1">อีเมล</label>
+            <input type="email" id="reg-email" placeholder="example@email.com" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+        </div>
+        <div>
+          <label class="text-xs text-zinc-400 block mb-1">ที่อยู่จัดส่งสินค้า <span class="text-red-400">*</span></label>
+          <textarea id="reg-address" required rows="2" placeholder="บ้านเลขที่, ถนน, ซอย, แขวง/ตำบล, เขต/อำเภอ" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs resize-none focus:outline-none focus:border-white"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-zinc-400 block mb-1">จังหวัด <span class="text-red-400">*</span></label>
+            <input type="text" id="reg-province" required placeholder="เช่น กรุงเทพฯ" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+          <div>
+            <label class="text-xs text-zinc-400 block mb-1">รหัสไปรษณีย์ <span class="text-red-400">*</span></label>
+            <input type="text" id="reg-postal" required placeholder="10110" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+        </div>
+        <button type="submit" class="w-full py-3 bg-white hover:bg-zinc-200 text-black font-bold text-xs rounded-xl transition shadow-lg mt-2">
+          ยืนยันการสมัครสมาชิก
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- USER PROFILE MODAL -->
+  <div id="user-profile-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="CustomerApp.closeUserProfileModal()" class="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white rounded-lg transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-12 h-12 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white">
+          <i data-lucide="user" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 id="profile-display-name" class="font-bold text-white text-base"></h3>
+          <span class="text-xs text-emerald-400 font-medium">● สมาชิก KIM Vision & Time</span>
+        </div>
+      </div>
+
+      <div class="space-y-3 text-xs bg-zinc-950 p-4 rounded-xl border border-zinc-800 mb-5">
+        <div>
+          <span class="text-zinc-500 block">เบอร์โทรศัพท์:</span>
+          <span id="profile-display-phone" class="font-medium text-white"></span>
+        </div>
+        <div>
+          <span class="text-zinc-500 block">อีเมล:</span>
+          <span id="profile-display-email" class="font-medium text-white"></span>
+        </div>
+        <div>
+          <span class="text-zinc-500 block">ที่อยู่จัดส่งเริ่มต้น:</span>
+          <span id="profile-display-address" class="font-medium text-white leading-relaxed"></span>
+        </div>
+      </div>
+
+      <div class="flex gap-2 justify-end">
+        <button onclick="CustomerApp.logoutUser()" class="px-4 py-2 bg-red-950/80 hover:bg-red-900 text-red-300 text-xs rounded-lg border border-red-800 transition flex items-center gap-1.5">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+          <span>ออกจากระบบ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. PRODUCT DETAIL / QUICK VIEW MODAL -->
+  <div id="product-detail-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <button onclick="CustomerApp.closeProductModal()" class="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white rounded-lg transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="grid grid-cols-1 sm:grid-cols-12 gap-6">
+        
+        <!-- Left: Product Graphic Preview -->
+        <div class="sm:col-span-5 bg-zinc-950 rounded-xl p-6 border border-zinc-800 flex flex-col justify-between items-center text-center">
+          <div id="modal-prod-stock" class="w-full flex justify-start"></div>
+          <div class="my-6 w-full flex flex-col items-center justify-center min-h-[160px]">
+            <div id="modal-image-preview-container" class="w-full flex items-center justify-center">
+              <i data-lucide="glasses" class="w-24 h-24 text-zinc-500 mx-auto"></i>
+            </div>
+            <span id="modal-prod-sku" class="text-xs font-mono text-zinc-500 mt-2 block"></span>
+          </div>
+          <button type="button" onclick="CustomerApp.openSizeGuideModal()" class="text-xs text-zinc-400 hover:text-white underline flex items-center gap-1">
+            <i data-lucide="ruler" class="w-3.5 h-3.5"></i>
+            ดูคู่มือขนาดแว่นตา & นาฬิกา
+          </button>
+        </div>
+
+        <!-- Right: Details & Options -->
+        <div class="sm:col-span-7 space-y-4">
+          <div>
+            <span id="modal-prod-category" class="text-xs font-mono text-zinc-400 uppercase"></span>
+            <h2 id="modal-prod-name" class="text-xl font-bold text-white mt-1 font-serif-brand"></h2>
+            <div class="flex items-center gap-3 mt-2">
+              <span id="modal-prod-price" class="text-2xl font-bold text-white"></span>
+              <span id="modal-prod-rating" class="text-xs text-zinc-400 flex items-center gap-1">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+              </span>
+            </div>
+          </div>
+
+          <p id="modal-prod-desc" class="text-xs text-zinc-400 leading-relaxed"></p>
+
+          <!-- Color Selector -->
+          <div>
+            <div class="flex justify-between text-xs mb-2">
+              <span class="text-zinc-400">สีของกรอบ / ตัวเรือน:</span>
+              <span id="modal-selected-color-name" class="text-white font-medium">Pitch Black</span>
+            </div>
+            <div id="modal-colors-container" class="flex gap-2"></div>
+          </div>
+
+          <!-- Size / Dimension Selector -->
+          <div>
+            <div class="flex justify-between text-xs mb-2">
+              <span id="modal-size-label" class="text-zinc-400">ขนาดไซส์ / รุ่น:</span>
+            </div>
+            <div id="modal-sizes-container" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <!-- Qty Stepper & Add to Bag -->
+          <div class="pt-4 border-t border-zinc-800 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-zinc-400">จำนวน:</span>
+              <div class="flex items-center border border-zinc-700 rounded-lg bg-zinc-950">
+                <button type="button" onclick="CustomerApp.changeModalQty(-1)" class="px-3 py-1.5 text-zinc-400 hover:text-white font-bold text-sm">-</button>
+                <input type="text" id="modal-qty-input" value="1" readonly class="w-10 text-center bg-transparent text-white font-bold text-sm">
+                <button type="button" onclick="CustomerApp.changeModalQty(1)" class="px-3 py-1.5 text-zinc-400 hover:text-white font-bold text-sm">+</button>
+              </div>
+            </div>
+
+            <button type="button" id="btn-modal-add-cart" onclick="CustomerApp.addCurrentModalToCart()" class="w-full py-3.5 bg-white hover:bg-zinc-200 text-black font-bold text-sm rounded-xl transition shadow-xl flex items-center justify-center gap-2">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              <span>เพิ่มลงตะกร้าสินค้า</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. CART SLIDE-OVER DRAWER -->
+  <div id="cart-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden" onclick="CustomerApp.closeCartDrawer()"></div>
+  <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-zinc-950 border-l border-zinc-800 z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+    
+    <!-- Drawer Header -->
+    <div class="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/50">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
+        <h3 class="font-bold text-white font-serif-brand text-lg">ตะกร้าสินค้า</h3>
+      </div>
+      <button id="btn-close-cart" class="p-2 text-zinc-400 hover:text-white rounded-lg transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Free Shipping Progress -->
+    <div class="px-6 py-3 bg-zinc-900 border-b border-zinc-800">
+      <div id="cart-free-shipping-text" class="text-xs text-zinc-400 mb-1.5"></div>
+      <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+        <div id="cart-free-shipping-progress" class="bg-white h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items List -->
+    <div class="p-6 flex-grow overflow-y-auto space-y-4">
+      <div id="cart-items-container" class="space-y-3"></div>
+
+      <!-- Empty State -->
+      <div id="cart-empty-state" class="py-16 text-center text-zinc-500 space-y-3">
+        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto text-zinc-600"></i>
+        <p class="text-zinc-400 font-medium">ยังไม่มีสินค้าในตะกร้า</p>
+        <p class="text-xs text-zinc-600">เลือกชมแว่นสายตา แว่นกรองแสงสีฟ้า และนาฬิกาพรีเมียม 30 รายการ</p>
+      </div>
+    </div>
+
+    <!-- Cart Footer & Checkout -->
+    <div id="cart-footer" class="p-6 border-t border-zinc-800 bg-zinc-900/80 space-y-4 hidden">
+      
+      <!-- Coupon Code -->
+      <div class="flex gap-2">
+        <input type="text" id="coupon-input" placeholder="โค้ดส่วนลด (เช่น KIMVIP10)" class="flex-grow px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs uppercase focus:outline-none focus:border-white">
+        <button id="btn-apply-coupon" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-white rounded-lg transition">ใช้โค้ด</button>
+      </div>
+
+      <!-- Summary Breakdown -->
+      <div class="space-y-1.5 text-xs text-zinc-400">
+        <div class="flex justify-between">
+          <span>ยอดรวมสินค้า:</span>
+          <span id="cart-subtotal" class="text-white font-medium">฿0</span>
+        </div>
+        <div class="flex justify-between">
+          <span>ส่วนลด:</span>
+          <span id="cart-discount" class="text-emerald-400 font-medium">฿0</span>
+        </div>
+        <div class="flex justify-between">
+          <span>ค่าจัดส่ง:</span>
+          <span id="cart-shipping" class="text-white font-medium">฿0</span>
+        </div>
+        <div class="flex justify-between text-base font-bold text-white pt-2 border-t border-zinc-800">
+          <span>ยอดสุทธิรวม:</span>
+          <span id="cart-grand-total" class="text-xl">฿0</span>
+        </div>
+      </div>
+
+      <button id="btn-go-to-checkout" class="w-full py-3.5 bg-white hover:bg-zinc-200 text-black font-bold text-sm rounded-xl transition shadow-xl flex items-center justify-center gap-2">
+        <span>ดำเนินการสั่งซื้อ (Checkout)</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 3. CHECKOUT & CUSTOMER INFORMATION MODAL -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <button onclick="CustomerApp.closeCheckoutModal()" class="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white rounded-lg transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2 bg-white text-black rounded-lg">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white font-serif-brand">ข้อมูลการจัดส่ง & ชำระเงิน</h2>
+          <p class="text-xs text-zinc-400">กรอกข้อมูลส่วนตัวเพื่อจัดส่งสินค้าและออกใบเสร็จรับเงินออนไลน์</p>
+        </div>
+      </div>
+
+      <form onsubmit="event.preventDefault(); CustomerApp.submitCheckout();" class="space-y-4">
+        
+        <!-- Full Name & Phone -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-zinc-400 block mb-1">ชื่อ - นามสกุล <span class="text-red-400">*</span></label>
+            <input type="text" id="checkout-name" required placeholder="เช่น คุณธนกร วัฒนศิริ" class="w-full px-3.5 py-2.5 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+          <div>
+            <label class="text-xs text-zinc-400 block mb-1">เบอร์โทรศัพท์ <span class="text-red-400">*</span></label>
+            <input type="tel" id="checkout-phone" required placeholder="08x-xxx-xxxx" class="w-full px-3.5 py-2.5 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="text-xs text-zinc-400 block mb-1">อีเมล (สำหรับรับใบเสร็จ E-Tax Invoice)</label>
+          <input type="email" id="checkout-email" placeholder="example@email.com" class="w-full px-3.5 py-2.5 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+        </div>
+
+        <!-- Shipping Address -->
+        <div>
+          <label class="text-xs text-zinc-400 block mb-1">ที่อยู่จัดส่ง (บ้านเลขที่, ถนน, ซอย, แขวง/ตำบล, เขต/อำเภอ) <span class="text-red-400">*</span></label>
+          <textarea id="checkout-address" required rows="2" placeholder="ระบุที่อยู่จัดส่งสินค้าโดยละเอียด" class="w-full px-3.5 py-2.5 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white resize-none"></textarea>
+        </div>
+
+        <!-- Province & Postal Code -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-zinc-400 block mb-1">จังหวัด <span class="text-red-400">*</span></label>
+            <input type="text" id="checkout-province" required placeholder="เช่น กรุงเทพมหานคร" class="w-full px-3.5 py-2.5 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+          <div>
+            <label class="text-xs text-zinc-400 block mb-1">รหัสไปรษณีย์ <span class="text-red-400">*</span></label>
+            <input type="text" id="checkout-postal" required placeholder="10110" class="w-full px-3.5 py-2.5 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-xs focus:outline-none focus:border-white">
+          </div>
+        </div>
+
+        <!-- Payment Method Selection -->
+        <div class="pt-3 border-t border-zinc-800">
+          <label class="text-xs font-semibold text-zinc-300 block mb-2">เลือกช่องทางการชำระเงิน:</label>
+          <div class="space-y-2">
+            
+            <label class="flex items-center gap-3 p-3 bg-zinc-950 rounded-lg border border-zinc-800 cursor-pointer hover:border-zinc-600 transition">
+              <input type="radio" name="payment-method" value="PromptPay QR" checked class="text-white focus:ring-0">
+              <div class="flex-grow flex items-center justify-between text-xs">
+                <span class="font-medium text-white flex items-center gap-2">
+                  <i data-lucide="qr-code" class="w-4 h-4 text-emerald-400"></i>
+                  พร้อมเพย์ QR Code (PromptPay - สแกนจ่ายทันที)
+                </span>
+                <span class="text-[10px] px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded">แนะนำ</span>
+              </div>
+            </label>
+
+            <label class="flex items-center gap-3 p-3 bg-zinc-950 rounded-lg border border-zinc-800 cursor-pointer hover:border-zinc-600 transition">
+              <input type="radio" name="payment-method" value="Credit/Debit Card" class="text-white focus:ring-0">
+              <div class="flex-grow flex items-center justify-between text-xs">
+                <span class="font-medium text-white flex items-center gap-2">
+                  <i data-lucide="credit-card" class="w-4 h-4 text-blue-400"></i>
+                  บัตรเครดิต / เดบิต (Visa, Mastercard, JCB)
+                </span>
+              </div>
+            </label>
+
+            <label class="flex items-center gap-3 p-3 bg-zinc-950 rounded-lg border border-zinc-800 cursor-pointer hover:border-zinc-600 transition">
+              <input type="radio" name="payment-method" value="Cash on Delivery" class="text-white focus:ring-0">
+              <div class="flex-grow flex items-center justify-between text-xs">
+                <span class="font-medium text-white flex items-center gap-2">
+                  <i data-lucide="truck" class="w-4 h-4 text-amber-400"></i>
+                  เก็บเงินปลายทาง (COD)
+                </span>
+              </div>
+            </label>
+
+          </div>
+        </div>
+
+        <!-- Total & Submit -->
+        <div class="pt-4 border-t border-zinc-800 flex items-center justify-between">
+          <div>
+            <span class="text-xs text-zinc-400 block">ยอดชำระสุทธิ:</span>
+            <span id="checkout-total-display" class="text-2xl font-bold text-white">฿0</span>
+          </div>
+          <button type="submit" class="px-6 py-3.5 bg-white hover:bg-zinc-200 text-black font-bold text-sm rounded-xl transition shadow-xl flex items-center gap-2">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>ยืนยันการสั่งซื้อ & ออกใบเสร็จ</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. OFFICIAL PRINTABLE BILL / E-RECEIPT MODAL -->
+  <div id="invoice-view-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-4xl w-full p-6 shadow-2xl relative max-h-[95vh] flex flex-col">
+      
+      <!-- Action Bar (Hidden in Print) -->
+      <div class="flex justify-between items-center pb-4 border-b border-zinc-800 no-print">
+        <div class="flex items-center gap-2">
+          <i data-lucide="receipt" class="w-5 h-5 text-emerald-400"></i>
+          <h3 class="font-bold text-white text-base">ใบเสร็จรับเงินออนไลน์ & ใบกำกับภาษี (E-Receipt / Tax Invoice)</h3>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="ManagerApp.printCurrentInvoice()" class="px-4 py-2 bg-white hover:bg-zinc-200 text-black font-bold text-xs rounded-lg transition flex items-center gap-1.5 shadow">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span>สั่งพิมพ์ใบเสร็จ (Print Bill)</span>
+          </button>
+          <button onclick="ManagerApp.closeInvoiceModal()" class="p-2 text-zinc-400 hover:text-white rounded-lg transition">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Printable Area -->
+      <div class="overflow-y-auto flex-grow py-4" id="printable-receipt-area">
+        <!-- Rendered by manager.js / app.js -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5. RESTOCK MODAL -->
+  <div id="restock-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="ManagerApp.closeRestockModal()" class="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white rounded-lg transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="p-2.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg">
+          <i data-lucide="plus-circle" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-white text-base">เติมสต็อกสินค้า (Restock)</h3>
+          <p id="restock-product-name" class="text-xs text-zinc-400 truncate max-w-xs"></p>
+        </div>
+      </div>
+
+      <input type="hidden" id="restock-product-id">
+
+      <div class="space-y-4 py-2">
+        <div class="flex justify-between items-center text-xs p-3 bg-zinc-950 rounded-lg border border-zinc-800">
+          <span class="text-zinc-400">สต็อกคงเหลือปัจจุบัน:</span>
+          <span id="restock-current-stock" class="font-bold text-white font-mono"></span>
+        </div>
+
+        <div>
+          <label class="text-xs text-zinc-400 block mb-1.5">จำนวนชิ้นที่ต้องการเพิ่ม:</label>
+          <input type="number" id="restock-add-amount" value="20" min="1" class="w-full px-3.5 py-2.5 bg-zinc-950 text-white rounded-lg border border-zinc-800 text-sm font-mono focus:outline-none focus:border-white">
+        </div>
+
+        <!-- Quick Presets -->
+        <div>
+          <span class="text-[11px] text-zinc-500 block mb-1.5">ปุ่มลัดเติมสต็อกด่วน:</span>
+          <div class="grid grid-cols-4 gap-2">
+            <button type="button" onclick="ManagerApp.setRestockPreset(10)" class="py-1.5 bg-zinc-800 hover:bg-zinc-700 text-xs text-white rounded border border-zinc-700">+10</button>
+            <button type="button" onclick="ManagerApp.setRestockPreset(25)" class="py-1.5 bg-zinc-800 hover:bg-zinc-700 text-xs text-white rounded border border-zinc-700">+25</button>
+            <button type="button" onclick="ManagerApp.setRestockPreset(50)" class="py-1.5 bg-zinc-800 hover:bg-zinc-700 text-xs text-white rounded border border-zinc-700">+50</button>
+            <button type="button" onclick="ManagerApp.setRestockPreset(100)" class="py-1.5 bg-zinc-800 hover:bg-zinc-700 text-xs text-white rounded border border-zinc-700">+100</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4 mt-2 border-t border-zinc-800 flex justify-end gap-2">
+        <button onclick="ManagerApp.closeRestockModal()" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs rounded-lg transition">ยกเลิก</button>
+        <button onclick="ManagerApp.submitRestock()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-lg transition">ยืนยันเติมสต็อก</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. EDIT PRODUCT MODAL -->
+  <div id="edit-product-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <button onclick="ManagerApp.closeEditProductModal()" class="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white rounded-lg transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <h3 class="font-bold text-white text-base mb-4 font-serif-brand">แก้ไขข้อมูลสินค้า (Edit Product)</h3>
+      <input type="hidden" id="edit-prod-id">
+
+      <div class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-zinc-400 block mb-1">ชื่อสินค้า</label>
+          <input type="text" id="edit-prod-name" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-zinc-400 block mb-1">รหัส SKU</label>
+            <input type="text" id="edit-prod-sku" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 font-mono">
+          </div>
+          <div>
+            <label class="text-zinc-400 block mb-1">หมวดหมู่</label>
+            <select id="edit-prod-category" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800">
+              <option value="prescription_glasses">แว่นสายตา (Prescription)</option>
+              <option value="bluelight_glasses">แว่นกรองแสงสีฟ้า (Blue Light)</option>
+              <option value="watches">นาฬิกาพรีเมียม (Watches)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="text-zinc-400 block mb-1">ราคาขาย (บาท)</label>
+            <input type="number" id="edit-prod-price" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 font-mono">
+          </div>
+          <div>
+            <label class="text-zinc-400 block mb-1">ต้นทุน (บาท)</label>
+            <input type="number" id="edit-prod-cost" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 font-mono">
+          </div>
+          <div>
+            <label class="text-zinc-400 block mb-1">สต็อกคงเหลือ (ชิ้น)</label>
+            <input type="number" id="edit-prod-stock" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-zinc-400 block mb-1">แท็กป้ายกำกับ (เช่น BESTSELLER, NEW, LIMITED)</label>
+          <input type="text" id="edit-prod-tag" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 uppercase">
+        </div>
+
+        <div>
+          <label class="text-zinc-400 block mb-1">รายละเอียดและสเปกสินค้า</label>
+          <textarea id="edit-prod-desc" rows="3" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 resize-none"></textarea>
+        </div>
+      </div>
+
+      <div class="pt-4 mt-4 border-t border-zinc-800 flex justify-end gap-2">
+        <button onclick="ManagerApp.closeEditProductModal()" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs rounded-lg transition">ยกเลิก</button>
+        <button onclick="ManagerApp.saveProductEdit()" class="px-5 py-2 bg-white hover:bg-zinc-200 text-black font-semibold text-xs rounded-lg transition">บันทึกการแก้ไข</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. ADD NEW PRODUCT MODAL -->
+  <div id="add-product-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <button onclick="ManagerApp.closeAddProductModal()" class="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white rounded-lg transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <h3 class="font-bold text-white text-base mb-4 font-serif-brand">เพิ่มสินค้าใหม่ (Add New Product)</h3>
+
+      <div class="space-y-3.5 text-xs">
+        <div>
+          <label class="text-zinc-400 block mb-1">ชื่อสินค้า <span class="text-red-400">*</span></label>
+          <input type="text" id="add-prod-name" placeholder="เช่น KIM Titanium Square Optical" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-zinc-400 block mb-1">รหัส SKU</label>
+            <input type="text" id="add-prod-sku" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 font-mono">
+          </div>
+          <div>
+            <label class="text-zinc-400 block mb-1">หมวดหมู่</label>
+            <select id="add-prod-category" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800">
+              <option value="prescription_glasses">แว่นสายตา (Prescription)</option>
+              <option value="bluelight_glasses">แว่นกรองแสงสีฟ้า (Blue Light)</option>
+              <option value="watches">นาฬิกาพรีเมียม (Watches)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-zinc-400 block mb-1">ราคาขาย (บาท) <span class="text-red-400">*</span></label>
+            <input type="number" id="add-prod-price" placeholder="3490" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 font-mono">
+          </div>
+          <div>
+            <label class="text-zinc-400 block mb-1">สต็อกเริ่มต้น (ชิ้น)</label>
+            <input type="number" id="add-prod-stock" value="30" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-zinc-400 block mb-1">แท็กสินค้า (Tag)</label>
+          <input type="text" id="add-prod-tag" value="NEW" class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 uppercase">
+        </div>
+
+        <div>
+          <label class="text-zinc-400 block mb-1">คำอธิบายและจุดเด่นสินค้า</label>
+          <textarea id="add-prod-desc" rows="3" placeholder="ระบุวัสดุ เลนส์ กลไก และคุณสมบัติเด่น..." class="w-full px-3 py-2 bg-zinc-950 text-white rounded-lg border border-zinc-800 resize-none"></textarea>
+        </div>
+      </div>
+
+      <div class="pt-4 mt-4 border-t border-zinc-800 flex justify-end gap-2">
+        <button onclick="ManagerApp.closeAddProductModal()" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs rounded-lg transition">ยกเลิก</button>
+        <button onclick="ManagerApp.saveNewProduct()" class="px-5 py-2 bg-white hover:bg-zinc-200 text-black font-semibold text-xs rounded-lg transition">เพิ่มสินค้า</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. SIZE & DIMENSIONS GUIDE MODAL -->
+  <div id="size-guide-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <button onclick="CustomerApp.closeSizeGuideModal()" class="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white rounded-lg transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-2.5 mb-4">
+        <i data-lucide="ruler" class="w-5 h-5 text-white"></i>
+        <h3 class="font-bold text-white text-base font-serif-brand">คู่มือขนาดแว่นตา & นาฬิกา (Sizing Guide)</h3>
+      </div>
+
+      <!-- Table 1: Glasses -->
+      <div class="mb-5">
+        <h4 class="text-xs font-bold text-zinc-200 uppercase mb-2 flex items-center gap-1.5">
+          <i data-lucide="glasses" class="w-4 h-4 text-zinc-400"></i>
+          ตารางขนาดกรอบแว่นตา (Eyewear Dimensions - มิลลิเมตร)
+        </h4>
+        <div class="overflow-x-auto rounded-lg border border-zinc-800">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-zinc-950 text-zinc-400 uppercase font-semibold">
+              <tr>
+                <th class="py-2.5 px-3">ขนาดกรอบ</th>
+                <th class="py-2.5 px-3">ความกว้างเลนส์</th>
+                <th class="py-2.5 px-3">สะพานจมูก</th>
+                <th class="py-2.5 px-3">ความยาวขาแว่น</th>
+                <th class="py-2.5 px-3">ความกว้างหน้าแว่น</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-800 text-zinc-300">
+              <tr><td class="py-2 px-3 font-bold text-white">S (Small)</td><td class="py-2 px-3">47 - 48 mm</td><td class="py-2 px-3">19 - 20 mm</td><td class="py-2 px-3">142 mm</td><td class="py-2 px-3">130 - 134 mm</td></tr>
+              <tr><td class="py-2 px-3 font-bold text-white">M (Medium)</td><td class="py-2 px-3">49 - 51 mm</td><td class="py-2 px-3">20 - 21 mm</td><td class="py-2 px-3">145 mm</td><td class="py-2 px-3">135 - 140 mm</td></tr>
+              <tr><td class="py-2 px-3 font-bold text-white">L (Wide)</td><td class="py-2 px-3">52 - 54 mm</td><td class="py-2 px-3">20 - 22 mm</td><td class="py-2 px-3">148 mm</td><td class="py-2 px-3">141 - 148 mm</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Table 2: Watches -->
+      <div>
+        <h4 class="text-xs font-bold text-zinc-200 uppercase mb-2 flex items-center gap-1.5">
+          <i data-lucide="watch" class="w-4 h-4 text-zinc-400"></i>
+          ตารางขนาดตัวเรือนและสายนาฬิกา (Watch Sizing Guide)
+        </h4>
+        <div class="overflow-x-auto rounded-lg border border-zinc-800 mb-3">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-zinc-950 text-zinc-400 uppercase font-semibold">
+              <tr>
+                <th class="py-2.5 px-3">ขนาดหน้าปัด</th>
+                <th class="py-2.5 px-3">ความกว้างสาย</th>
+                <th class="py-2.5 px-3">รอบข้อมือที่แนะนำ</th>
+                <th class="py-2.5 px-3">สไตล์</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-800 text-zinc-300">
+              <tr><td class="py-2 px-3 font-bold text-white">38 - 39 mm</td><td class="py-2 px-3">18 - 20 mm</td><td class="py-2 px-3">14.0 - 17.5 ซม.</td><td class="py-2 px-3">Unisex / มินิมอลเรียบหรู</td></tr>
+              <tr><td class="py-2 px-3 font-bold text-white">40 - 41 mm</td><td class="py-2 px-3">20 mm</td><td class="py-2 px-3">15.5 - 19.0 ซม.</td><td class="py-2 px-3">Standard / เหมาะกับทุกข้อมือ</td></tr>
+              <tr><td class="py-2 px-3 font-bold text-white">42 mm+</td><td class="py-2 px-3">22 mm</td><td class="py-2 px-3">17.0 - 21.5 ซม.</td><td class="py-2 px-3">Sport / Chronograph / Diver</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-zinc-500 bg-zinc-950 p-3 rounded-lg border border-zinc-800">
+        💡 <strong>คำแนะนำ:</strong> สายนาฬิกาแบบ Milanese Mesh สามารถปรับเลื่อนความยาวได้เอง ส่วนสายหนังแท้มีรูเจาะรองรับทุกขนาดข้อมือ
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  <script>
+    function switchManagerTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active', 'text-white');
+        b.classList.add('text-zinc-400');
+      });
+      document.querySelectorAll('#manager-view section').forEach(s => s.classList.add('hidden'));
+
+      const activeTabBtn = document.getElementById(`tab-btn-${tabName}`);
+      const activeSection = document.getElementById(`manager-tab-${tabName}`);
+
+      if (activeTabBtn) {
+        activeTabBtn.classList.add('active', 'text-white');
+        activeTabBtn.classList.remove('text-zinc-400');
+      }
+      if (activeSection) {
+        activeSection.classList.remove('hidden');
+      }
+
+      if (tabName === 'analytics') {
+        ManagerApp.renderDashboard();
+      } else if (tabName === 'inventory') {
+        ManagerApp.renderInventoryTable();
+      } else if (tabName === 'orders') {
+        ManagerApp.renderOrdersTable();
+      }
+    }
+  </script>
+  
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/manager.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
